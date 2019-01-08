@@ -27,6 +27,10 @@ public:
 	virtual void nhap();
 	virtual void xuat();
 
+	virtual void nhapFile(istream& iFile);
+	virtual void xuatFile(ostream& oFile);
+
+
 	virtual void setMaSach(const string& maSach);
 	virtual string getMaSach();
 
@@ -42,8 +46,6 @@ public:
 	virtual void setGiaSach(const float& giaSach);
 	virtual float getGiaSach();
 
-	friend istream& operator>>(istream& input, Sach& sach);
-	friend ostream& operator<<(ostream& output, const Sach& sach);
 };
 
 /*Class Sách Tiếng Việt*/
@@ -55,10 +57,8 @@ public:
 	virtual ~SachTiengViet() {};
 	SachTiengViet& operator=(const SachTiengViet& sachTiengViet);
 
-	virtual string loaiSach();
 
-	friend istream& operator>>(istream& input, SachTiengViet& sachTiengViet);
-	friend ostream& operator<<(ostream& output, SachTiengViet& sachTiengViet);
+	virtual string loaiSach();
 };
 
 /*Class Sách Ngoại Văn*/
@@ -74,12 +74,13 @@ public:
 	virtual void nhap();
 	virtual void xuat();
 
+	virtual void nhapFile(istream& iFile);
+	virtual void xuatFile(ostream& oFile);
+
 	virtual void setISBN(const string& ISBN);
 	virtual string getISBN();
 
 	virtual string loaiSach();
-	friend istream& operator>>(istream& input, SachNgoaiVan& sachNgoaiVan);
-	friend ostream& operator<<(ostream& output, SachNgoaiVan& sachNgoaiVan);
 };
 
 /*Class Đọc Giả*/
@@ -99,6 +100,9 @@ public:
 
 	void nhap();
 	void xuat();
+
+	void nhapFile(istream& input);
+	void xuatFile(ostream& output);
 
 	void setMaDocGia(const string& maDocGia);
 	string getMaDocGia();
@@ -120,9 +124,6 @@ public:
 
 	void setNgayHetHan(const string& ngayHetHan);
 	string getNgayHetHan();
-
-	friend istream& operator>>(istream& input, DocGia& docGia);
-	friend ostream& operator<<(ostream& output, const DocGia& docGia);
 };
 
 /*Class Phiếu Mượn Trả Sách*/
@@ -143,16 +144,15 @@ public:
 		{
 			for (auto *i : this->sachMuon)
 			{
-				delete[] i;
+				delete i;
 			}
 		}
 	}
-
-	void nhap();
+	void nhap(const string& maPhieu, const string& tenDocGia);
 	void xuat();
 
-	friend istream& operator>>(istream& input, PhieuMuonTraSach& phieuMuonTraSach);
-//	friend ostream& operator<<(ostream& output, const PhieuMuonTraSach& phieuMuonTraSach);
+	void nhapFile(istream& file);
+//	void xuatFile(ostream& file);
 };
 
 
@@ -162,7 +162,7 @@ class QuanLyThuVien
 private:
 	vector<Sach*> sach;
 	vector<DocGia> docGia;
-	vector<PhieuMuonTraSach> phieuMuonTraSach;
+	vector<PhieuMuonTraSach*> phieuMuonTraSach;
 public:
 	QuanLyThuVien() {};
 	virtual ~QuanLyThuVien()
@@ -176,7 +176,7 @@ public:
 		}
 	}
 	
-	void nhap(const string& fileSach, const string& fileDocGia);
+	void nhap(const string& fileSach, const string& fileDocGia, const string& filePhieu);
 	void xuat();
 
 	void themSach();
@@ -189,7 +189,7 @@ public:
 	void suaDocGia();
 	void timKiemDocGia();
 
-
+	void danhSachDocGiaBiPhat();
 };
 
 #endif // !LIBRARY_H__

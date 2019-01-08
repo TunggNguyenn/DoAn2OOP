@@ -80,6 +80,29 @@ void Sach::xuat()
 	cout << this->giaSach;
 }
 
+void Sach::nhapFile(istream & iFile)
+{
+	getline(iFile, this->maSach, ',');
+	getline(iFile, this->tenSach, ',');
+	getline(iFile, this->tacGia, ',');
+	getline(iFile, this->nhaXuatBan, ',');
+	iFile >> this->giaSach;
+}
+
+void Sach::xuatFile(ostream & oFile)
+{
+	oFile << setw(15) << left;
+	oFile << this->maSach;
+	oFile << setw(51) << left;
+	oFile << this->tenSach;
+	oFile << setw(31) << left;
+	oFile << this->tacGia;
+	oFile << setw(31) << left;
+	oFile << this->nhaXuatBan;
+	oFile << setw(15) << left;
+	oFile << this->giaSach;
+}
+
 void Sach::setMaSach(const string& maSach)
 {
 	this->maSach = maSach;
@@ -142,6 +165,8 @@ SachTiengViet & SachTiengViet::operator=(const SachTiengViet & sachTiengViet)
 	return *this;
 }
 
+
+
 /*---------------Sách Tiếng Việt---------------*/
 string SachTiengViet::loaiSach()
 {
@@ -176,6 +201,20 @@ void SachNgoaiVan::xuat()
 	cout << this->ISBN;
 }
 
+void SachNgoaiVan::nhapFile(istream & iFile)
+{
+	Sach::nhapFile(iFile);
+	iFile.seekg(1L, ios::cur);
+	getline(iFile, this->ISBN);
+}
+
+void SachNgoaiVan::xuatFile(ostream & oFile)
+{
+	Sach::xuat();
+	oFile << setw(15) << left;
+	oFile << this->ISBN;
+}
+
 void SachNgoaiVan::setISBN(const string & ISBN)
 {
 	this->ISBN = ISBN;
@@ -189,100 +228,6 @@ string SachNgoaiVan::getISBN()
 string SachNgoaiVan::loaiSach()
 {
 	return "Sach Ngoai Van";
-}
-
-istream & operator>>(istream & input, Sach& sach)
-{
-	getline(input, sach.maSach, ',');
-	getline(input, sach.tenSach, ',');
-	getline(input, sach.tacGia, ',');
-	getline(input, sach.nhaXuatBan, ',');
-	input >> sach.giaSach;
-	return input;
-}
-
-ostream & operator<<(ostream & output, const Sach & sach)
-{
-	output << setw(15) << left;
-	output << sach.maSach;
-	output << setw(51) << left;
-	output << sach.tenSach;
-	output << setw(31) << left;
-	output << sach.tacGia;
-	output << setw(31) << left;
-	output << sach.nhaXuatBan;
-	output << setw(15) << left;
-	output << sach.giaSach;
-	return output;
-}
-
-istream & operator>>(istream & input, SachTiengViet & sachTiengViet)
-{
-	string s;
-	float price;
-	getline(input, s, ',');
-	sachTiengViet.setMaSach(s);
-	getline(input, s, ',');
-	sachTiengViet.setTenSach(s);
-	getline(input, s, ',');
-	sachTiengViet.setTacGia(s);
-	getline(input, s, ',');
-	sachTiengViet.setNhaXuatBan(s);
-	input >> price;
-	sachTiengViet.setGiaSach(price);
-	return input;
-}
-
-ostream & operator<<(ostream & output, SachTiengViet & sachTiengViet)
-{
-	output << setw(15) << left;
-	output << sachTiengViet.getMaSach();
-	output << setw(51) << left;
-	output << sachTiengViet.getTenSach();
-	output << setw(31) << left;
-	output << sachTiengViet.getTacGia();
-	output << setw(31) << left;
-	output << sachTiengViet.getNhaXuatBan();
-	output << setw(15) << left;
-	output << sachTiengViet.getGiaSach();
-	return output;
-}
-
-istream & operator>>(istream & input, SachNgoaiVan & sachNgoaiVan)
-{
-	string s;
-	float price;
-	getline(input, s, ',');
-	sachNgoaiVan.setMaSach(s);
-	getline(input, s, ',');
-	sachNgoaiVan.setTenSach(s);
-	getline(input, s, ',');
-	sachNgoaiVan.setTacGia(s);
-	getline(input, s, ',');
-	sachNgoaiVan.setNhaXuatBan(s);
-	input >> price;
-	sachNgoaiVan.setGiaSach(price);
-	input.seekg(1l, ios::cur);
-	getline(input, s);
-	sachNgoaiVan.setISBN(s);
-	return input;
-}
-
-ostream & operator<<(ostream & output, SachNgoaiVan & sachNgoaiVan)
-{
-	output << setw(15) << left;
-	output << sachNgoaiVan.getMaSach();
-	output << setw(51) << left;
-	output << sachNgoaiVan.getTenSach();
-	output << setw(31) << left;
-	output << sachNgoaiVan.getTacGia();
-	output << setw(31) << left;
-	output << sachNgoaiVan.getNhaXuatBan();
-	output << setw(15) << left;
-	output << sachNgoaiVan.getGiaSach();
-	output << setw(15) << left;
-	output << sachNgoaiVan.getISBN();
-	return output;
 }
 
 
@@ -323,6 +268,35 @@ void DocGia::xuat()
 	cout << this->ngayCap;
 	cout << setw(15) << left;
 	cout << this->ngayHetHan;
+}
+
+void DocGia::nhapFile(istream & input)
+{
+	getline(input, this->maDocGia, ',');
+	getline(input, this->tenDocGia, ',');
+	getline(input, this->ngaySinh, ',');
+	getline(input, this->diaChi, ',');
+	getline(input, this->ngheNghiep, ',');
+	getline(input, this->ngayCap, ',');
+	getline(input, this->ngayHetHan);
+}
+
+void DocGia::xuatFile(ostream & output)
+{
+	output << setw(15) << left;
+	output << this->maDocGia;
+	output << setw(31) << left;
+	output << this->tenDocGia;
+	output << setw(12) << left;
+	output << this->ngaySinh;
+	output << setw(25) << left;
+	output << this->diaChi;
+	output << setw(25) << left;
+	output << this->ngheNghiep;
+	output << setw(15) << left;
+	output << this->ngayCap;
+	output << setw(25) << left;
+	output << this->ngayHetHan;
 }
 
 void DocGia::setMaDocGia(const string & maDocGia)
@@ -395,57 +369,100 @@ string DocGia::getNgayHetHan()
 	return this->ngayHetHan;
 }
 
-istream & operator>>(istream & input, DocGia & docGia)
-{
-	getline(input, docGia.maDocGia, ',');
-	getline(input, docGia.tenDocGia, ',');
-	getline(input, docGia.ngaySinh, ',');
-	getline(input, docGia.diaChi, ',');
-	getline(input, docGia.ngheNghiep, ',');
-	getline(input, docGia.ngayCap, ',');
-	getline(input, docGia.ngayHetHan);
-	return input;
-}
 
-ostream & operator<<(ostream & output, const DocGia & docGia)
-{
-	output << setw(15) << left;
-	output << docGia.maDocGia;
-	output << setw(31) << left;
-	output << docGia.tenDocGia;
-	output << setw(12) << left;
-	output << docGia.ngaySinh;
-	output << setw(25) << left;
-	output << docGia.diaChi;
-	output << setw(25) << left;
-	output << docGia.ngheNghiep;
-	output << setw(15) << left;
-	output << docGia.ngayCap;
-	output << setw(25) << left;
-	output << docGia.ngayHetHan;
-	return output;
-}
 
-istream & operator>>(istream & input, PhieuMuonTraSach & phieuMuonTraSach)
-{
-	string test;
-	do
-	{
-		getline(input, s, ',');
-		if (phieuMuonTraSach.maPhieu != s)
-		{
-
-		}
-	} while (1);
-
-	return input;
-}
 
 
 /*---------------Phiếu Mượn Trả Sách---------------*/
-void PhieuMuonTraSach::nhap()
+void PhieuMuonTraSach::nhapFile(istream& file)
 {
-	cout << "Ma phieu: ";
+	string test;
+	int count = 0;
+	do
+	{
+		getline(file, this->maPhieu, ',');
+		getline(file, this->tenDocGia, ',');
+		file >> this->ngayMuon;
+		file >> this->ngayHetHan;
+		file >> this->ngayTra;
+		this->sachMuon.resize(this->sachMuon.size() + 1);
+
+		getline(file, test);
+		for (int i = 0; i < test.length(); i++)
+		{
+			if (test[i] == ',')
+			{
+				count++;
+			}
+		}
+		int pos = test.length();
+		if (count == 5)
+		{
+			file.seekg(-(pos + 2), ios::cur);
+			this->sachMuon[this->sachMuon.size() - 1] = new SachNgoaiVan;
+			this->sachMuon[this->sachMuon.size() - 1]->nhapFile(file);
+		}
+		else if (count == 4)
+		{
+			file.seekg(-(pos + 2), ios::cur);
+			this->sachMuon[this->sachMuon.size() - 1] = new SachTiengViet;
+			this->sachMuon[this->sachMuon.size() - 1]->nhapFile(file);
+		}
+
+		getline(file, test, ',');
+		if (this->maPhieu == test)
+		{
+			int i = test.length();
+			file.seekg(-(i + 1), ios::cur);
+		}
+		else
+		{
+			int i = test.length();
+			file.seekg(-(i + 1), ios::cur); break;
+	
+		}
+		count = 0;
+	} while (true);
+}
+
+void PhieuMuonTraSach::nhap(const string& maPhieu, const string& tenDocGia)
+{
+	this->maPhieu = maPhieu;
+	this->tenDocGia = tenDocGia;
+	cout << "Ngay muon: ";
+	cin >> this->ngayMuon;
+	cout << "Ngay het han: ";
+	cin >> this->ngayHetHan;
+	cout << "Ngay tra: ";
+	cin >> this->ngayTra;
+
+	int soSach;
+	int choose;
+	cout << "Nhap so sach can muon: ";
+	cin >> soSach;
+	cin.ignore();
+	this->sachMuon.resize(soSach);
+
+
+	for (int i = 0; i < soSach; i++)
+	{
+		cout << "Input 1: Sach Tieng Viet.\n";
+		cout << "      2: Sach Ngoai Van.\n";
+		cout << "Choose: ";
+		cin >> choose;
+		cin.ignore();
+
+		if (choose == 1)
+		{
+			this->sachMuon[i] = new SachTiengViet;
+			this->sachMuon[i]->nhap();
+		}
+		else if (choose == 2)
+		{
+			this->sachMuon[i] = new SachNgoaiVan;
+			this->sachMuon[i]->nhap();
+		}
+	}
 }
 
 void PhieuMuonTraSach::xuat()
@@ -454,15 +471,15 @@ void PhieuMuonTraSach::xuat()
 	cout << this->maPhieu;
 	cout << setw(31) << left;
 	cout << this->tenDocGia;
-	cout << setw(15) << left;
+	cout << setw(15) << right;
 	cout << this->ngayMuon;
-	cout << setw(15) << left;
+	cout << setw(15) << right;
 	cout << this->ngayHetHan;
-	cout << setw(15) << left;
+	cout << setw(15) << right;
 	cout << this->ngayTra;
 	cout << "\n";
 
-	cout << "\n\nDanh muc sach muon:\n";
+	cout << "\n\nDanh muc sach muon: \n";
 	
 	cout << setw(15) << left;
 	cout << "Ma sach: ";
@@ -487,16 +504,17 @@ void PhieuMuonTraSach::xuat()
 
 
 /*---------------Quản Lý Thư Viện---------------*/
-void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia)
+void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia, const string& filePhieu)
 {
 	ifstream ifopen;
 	/*------------Đọc File Sách------------*/
 	ifopen.open(fileSach, ios::in);
-	ifopen.seekg(53L, ios::beg);
-	
+
 	string test;
+	getline(ifopen, test);
+
 	int count = 0;
-	
+
 	while (!ifopen.eof())
 	{
 		getline(ifopen, test);
@@ -511,20 +529,18 @@ void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia)
 		if (count == 5)
 		{
 			ifopen.seekg(-(pos + 2), ios::cur);
-			SachNgoaiVan* sachNgoaiVan = new SachNgoaiVan;
-			ifopen >> *sachNgoaiVan;
 
 			this->sach.resize(this->sach.size() + 1);
-			this->sach[this->sach.size() - 1] = sachNgoaiVan;
+			this->sach[this->sach.size() - 1] = new SachNgoaiVan;
+			this->sach[this->sach.size() - 1]->nhapFile(ifopen);
 		}
 		else if (count == 4)
 		{
 			ifopen.seekg(-(int)(pos + 2), ios::cur);
-			SachTiengViet* sachTiengViet = new SachTiengViet;
-			ifopen >> *sachTiengViet;
 
 			this->sach.resize(this->sach.size() + 1);
-			this->sach[this->sach.size() - 1] = sachTiengViet;
+			this->sach[this->sach.size() - 1] = new SachTiengViet;
+			this->sach[this->sach.size() - 1]->nhapFile(ifopen);
 		}
 
 		count = 0;
@@ -535,28 +551,54 @@ void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia)
 
 	/*------------Đọc File Đọc Giả------------*/
 	ifopen.open(fileDocGia, ios::in);
-	ifopen.seekg(109L, ios::beg);
-	
-	string test1 = "";
 
+	getline(ifopen, test);
+
+	test = "";
 	while (!ifopen.eof())
 	{
-		ifopen >> test1;
-		if (test1.length() <= 0)
+		ifopen >> test;
+		if (test.length() <= 0)
 		{
 			break;
 		}
 		else
 		{
-			int i = test1.length();
+			int i = test.length();
 			ifopen.seekg(-i, ios::cur);
 		}
 		this->docGia.resize(this->docGia.size() + 1);
-		ifopen >> this->docGia[this->docGia.size() - 1];
+		this->docGia[this->docGia.size() - 1].nhapFile(ifopen);
 
-
-		test1 = "";
+		test = "";
 	}
+	ifopen.close();
+
+
+	/*------------Đọc File Danh Sach Phieu Muon Tra Sach------------*/
+	ifopen.open("DanhSachPhieuMuonTraSach.csv", ios::in);
+
+	getline(ifopen, test);
+	
+
+	while (!ifopen.eof())
+	{
+		this->phieuMuonTraSach.resize(this->phieuMuonTraSach.size() + 1);
+		this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1] = new PhieuMuonTraSach;
+		this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1]->nhapFile(ifopen);
+		getline(ifopen, test, ',');
+
+		if (test.length() != 0)
+		{
+			int i = test.length();
+			ifopen.seekg(-i, ios::cur);
+		}
+		else
+		{
+			break;
+		}
+	}
+
 	ifopen.close();
 }
 
@@ -571,6 +613,12 @@ void QuanLyThuVien::xuat()
 	for (auto i : this->docGia)
 	{
 		i.xuat();
+		cout << endl;
+	}
+
+	for (auto *i : this->phieuMuonTraSach)
+	{
+		i->xuat();
 		cout << endl;
 	}
 }

@@ -1,4 +1,5 @@
 #include "MyDate.h"
+#include <iomanip>
 
 void MyDate::nhap()
 {
@@ -81,11 +82,13 @@ istream & operator>>(istream & input, MyDate & myDate)
 	input >> myDate.month;
 	input.ignore();
 	input >> myDate.year;
+	input.ignore();
 	return input;
 }
 
 ostream & operator<<(ostream & output, const MyDate & myDate)
 {
+	//output << setw(15) << right;
 	output << myDate.day << "/" << myDate.month << "/" << myDate.year;
 	return output;
 }
