@@ -14,13 +14,41 @@ void menuDocGia()
 	cout << "Dia chi: ";
 	cout << setw(25) << left;
 	cout << "Nghe nghiep: ";
-	cout << setw(12) << left;
+	cout << setw(15) << left;
 	cout << "Ngay cap: ";
-	cout << setw(25) << left;
+	cout << setw(15) << left;
 	cout << "Ngay het han: ";
 	cout << "\n";
 }
 
+void menuPhieuMuonTraSach()
+{
+	cout << setw(15) << left;
+	cout << "Ma phieu: ";
+	cout << setw(31) << left;
+	cout << "Ten doc gia: ";
+	cout << setw(15) << left;
+	cout << "Ngay muon: ";
+	cout << setw(15) << left;
+	cout << "Ngay het han: ";
+	cout << setw(15) << left;
+	cout << "Ngay tra: ";
+	cout << "\n";
+}
+
+Sach & Sach::operator=(const Sach & sach)
+{
+	if (this != &sach)
+	{
+		this->maSach = sach.maSach;
+		this->tenSach = sach.tenSach;
+		this->tacGia = sach.tacGia;
+		this->nhaXuatBan = sach.nhaXuatBan;
+		this->giaSach = sach.giaSach;
+	}
+
+	return *this;
+}
 
 /*---------------Sách---------------*/
 void Sach::nhap()
@@ -105,6 +133,15 @@ float Sach::getGiaSach()
 
 
 
+SachTiengViet & SachTiengViet::operator=(const SachTiengViet & sachTiengViet)
+{
+	if (this != &sachTiengViet)
+	{
+		Sach::operator=(sachTiengViet);
+	}
+	return *this;
+}
+
 /*---------------Sách Tiếng Việt---------------*/
 string SachTiengViet::loaiSach()
 {
@@ -113,6 +150,16 @@ string SachTiengViet::loaiSach()
 
 
 
+
+SachNgoaiVan & SachNgoaiVan::operator=(const SachNgoaiVan & sachNgoaiVan)
+{
+	if (this != &sachNgoaiVan)
+	{
+		Sach::operator=(sachNgoaiVan);
+		this->ISBN = sachNgoaiVan.ISBN;
+	}
+	return *this;
+}
 
 /*---------------Sách Ngoại Văn---------------*/
 void SachNgoaiVan::nhap()
@@ -272,11 +319,10 @@ void DocGia::xuat()
 	cout << this->diaChi;
 	cout << setw(25) << left;
 	cout << this->ngheNghiep;
-	cout << setw(12) << left;
+	cout << setw(15) << left;
 	cout << this->ngayCap;
-	cout << setw(25) << left;
+	cout << setw(15) << left;
 	cout << this->ngayHetHan;
-	cout << "\n";
 }
 
 void DocGia::setMaDocGia(const string & maDocGia)
@@ -373,26 +419,78 @@ ostream & operator<<(ostream & output, const DocGia & docGia)
 	output << docGia.diaChi;
 	output << setw(25) << left;
 	output << docGia.ngheNghiep;
-	output << setw(12) << left;
+	output << setw(15) << left;
 	output << docGia.ngayCap;
 	output << setw(25) << left;
 	output << docGia.ngayHetHan;
-	output << "\n";
 	return output;
+}
+
+istream & operator>>(istream & input, PhieuMuonTraSach & phieuMuonTraSach)
+{
+	string test;
+	do
+	{
+		getline(input, s, ',');
+		if (phieuMuonTraSach.maPhieu != s)
+		{
+
+		}
+	} while (1);
+
+	return input;
 }
 
 
 /*---------------Phiếu Mượn Trả Sách---------------*/
 void PhieuMuonTraSach::nhap()
 {
+	cout << "Ma phieu: ";
+}
 
+void PhieuMuonTraSach::xuat()
+{
+	cout << setw(15) << left;
+	cout << this->maPhieu;
+	cout << setw(31) << left;
+	cout << this->tenDocGia;
+	cout << setw(15) << left;
+	cout << this->ngayMuon;
+	cout << setw(15) << left;
+	cout << this->ngayHetHan;
+	cout << setw(15) << left;
+	cout << this->ngayTra;
+	cout << "\n";
+
+	cout << "\n\nDanh muc sach muon:\n";
+	
+	cout << setw(15) << left;
+	cout << "Ma sach: ";
+	cout << setw(51) << left;
+	cout << "Ten sach: ";
+	cout << setw(31) << left;
+	cout << "Tac gia: ";
+	cout << setw(31) << left;
+	cout << "Nha xuat ban: ";
+	cout << setw(15) << left;
+	cout << "Gia sach: ";
+	cout << setw(15) << left;
+	cout << "ISBN: ";
+	cout << "\n";
+
+	for (auto *i : this->sachMuon)
+	{
+		i->xuat();
+		cout << endl;
+	}
 }
 
 
 /*---------------Quản Lý Thư Viện---------------*/
-void QuanLyThuVien::nhap(const string & fileSach)
+void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia)
 {
 	ifstream ifopen;
+	/*------------Đọc File Sách------------*/
 	ifopen.open(fileSach, ios::in);
 	ifopen.seekg(53L, ios::beg);
 	
@@ -431,6 +529,35 @@ void QuanLyThuVien::nhap(const string & fileSach)
 
 		count = 0;
 	}
+
+	ifopen.close();
+
+
+	/*------------Đọc File Đọc Giả------------*/
+	ifopen.open(fileDocGia, ios::in);
+	ifopen.seekg(109L, ios::beg);
+	
+	string test1 = "";
+
+	while (!ifopen.eof())
+	{
+		ifopen >> test1;
+		if (test1.length() <= 0)
+		{
+			break;
+		}
+		else
+		{
+			int i = test1.length();
+			ifopen.seekg(-i, ios::cur);
+		}
+		this->docGia.resize(this->docGia.size() + 1);
+		ifopen >> this->docGia[this->docGia.size() - 1];
+
+
+		test1 = "";
+	}
+	ifopen.close();
 }
 
 void QuanLyThuVien::xuat()
@@ -438,6 +565,12 @@ void QuanLyThuVien::xuat()
 	for (auto *i : this->sach)
 	{
 		i->xuat();
+		cout << endl;
+	}
+
+	for (auto i : this->docGia)
+	{
+		i.xuat();
 		cout << endl;
 	}
 }
@@ -450,6 +583,7 @@ void QuanLyThuVien::themSach()
 	{
 		cout << "Input 1: Them sach Tieng Viet.\n";
 		cout << "      2: Them sach Ngoai Van.\n";
+		cout << "Choose: ";
 		cin >> choose;
 		cin.ignore();
 		if (choose == 1)
@@ -474,4 +608,456 @@ void QuanLyThuVien::themSach()
 			continue;
 		}
 	} while (true);
+}
+
+void QuanLyThuVien::xoaSach()
+{
+	int choose;
+	string s;
+
+	do
+	{
+		cout << "Input 1: Xoa dua vao ma sach.\n";
+		cout << "      2: Xoa dua vao ten sach.\n";
+		cout << "Choose: ";
+		cin >> choose;
+		cin.ignore();
+
+		if (choose == 1)
+		{
+			cout << "Nhap ma sach can xoa: ";
+			getline(cin, s);
+			for (auto *i : this->sach)
+			{
+				if (i->getMaSach() == s && i != this->sach[this->sach.size() - 1])
+				{
+					delete[] i;
+					if (dynamic_cast<SachNgoaiVan*>(this->sach[this->sach.size() - 1]))
+					{
+						i = new SachNgoaiVan;
+						*i = *this->sach[this->sach.size() - 1];
+						dynamic_cast<SachNgoaiVan*>(i)->setISBN(dynamic_cast<SachNgoaiVan*>(this->sach[this->sach.size() - 1])->getISBN());
+					}
+					else
+					{
+						i = new SachTiengViet;
+						*i = *this->sach[this->sach.size() - 1];
+					}
+
+					this->sach.resize(this->sach.size() - 1);
+					break;
+				}
+				else if (i->getMaSach() == s && i == this->sach[this->sach.size() - 1])
+				{
+					this->sach.resize(this->sach.size() - 1);
+					break;
+				}
+			}
+			break;
+		}
+		else if (choose == 2)
+		{
+			cout << "Nhap ten sach can xoa: ";
+			getline(cin, s);
+			for (auto *i : this->sach)
+			{
+				if (i->getTenSach() == s && i != this->sach[this->sach.size() - 1])
+				{
+					delete[] i;
+					if (dynamic_cast<SachNgoaiVan*>(this->sach[this->sach.size() - 1]))
+					{
+						i = new SachNgoaiVan;
+						*i = *this->sach[this->sach.size() - 1];
+						dynamic_cast<SachNgoaiVan*>(i)->setISBN(dynamic_cast<SachNgoaiVan*>(this->sach[this->sach.size() - 1])->getISBN());
+					}
+					else
+					{
+						i = new SachTiengViet;
+						*i = *this->sach[this->sach.size() - 1];
+					}
+
+					this->sach.resize(this->sach.size() - 1);
+					break;
+				}
+				else if (i->getTenSach() == s && i == this->sach[this->sach.size() - 1])
+				{
+					this->sach.resize(this->sach.size() - 1);
+					break;
+				}
+				
+			}
+			break;
+		}
+		else
+		{
+			cout << "Lua chon khong phu hop. Vui long nhap lai.\n\n";
+			continue;
+		}
+	} while (true);
+
+
+}
+
+void QuanLyThuVien::suaSach()
+{
+	int choose;
+	string s;
+	bool flag = false;
+
+	cout << "Nhap ma sach can sua: ";
+	getline(cin, s);
+
+	for (auto *i : this->sach)
+	{
+		if (i->getMaSach() == s)
+		{
+			flag = true;
+			string str;
+			do
+			{
+				cout << "Input 1: Sua ma sach.\n";
+				cout << "      2: Sua ten sach.\n";
+				cout << "      3: Sua tac gia.\n";
+				cout << "      4: Sua nha xuat ban.\n";
+				cout << "      5: Sua gia sach.\n";
+				cout << "Choose: ";
+				cin >> choose;
+				cin.ignore();
+				if (choose == 1)
+				{
+					cout << "Nhap ma sach moi: ";
+					getline(cin, str);
+					i->setMaSach(str); break;
+				}
+				else if (choose == 2)
+				{
+					cout << "Nhap ten sach moi: ";
+					getline(cin, str);
+					i->setTenSach(str); break;
+				}
+				else if (choose == 3)
+				{
+					cout << "Nhap tac gia moi: ";
+					getline(cin, str);
+					i->setTacGia(str); break;
+				}
+				else if (choose == 4)
+				{
+					cout << "Nhap nha xuat ban moi: ";
+					getline(cin, str);
+					i->setNhaXuatBan(str); break;
+				}
+				else if (choose == 5)
+				{
+					int price;
+					cout << "Nhap gia sach moi: ";
+					cin >> price;
+					cin.ignore();
+					i->setGiaSach(price); break;
+				}
+				else
+				{
+					cout << "Lua chon khong phu hop. Vui long nhap lai.\n\n";
+					continue;
+				}
+			} while (true);
+		}
+		if (flag == true)
+		{
+			break;
+		}
+	}
+
+	if (flag == false)
+	{
+		cout << "Ma sach khong ton tai.!!\n\n";
+	}
+}
+
+void QuanLyThuVien::timKiemSach()
+{
+	int choose;
+	bool flag = false;
+	string s;
+
+	do
+	{
+		cout << "Input 1: Tim kiem theo ma sach.\n";
+		cout << "      2: Tim kiem the0 ten sach.\n";
+		cout << "      3: Tim kiem theo tac gia.\n";
+		cout << "Choose: ";
+		cin >> choose;
+		cin.ignore();
+
+		if (choose == 1)
+		{
+			cout << "Nhap ma sach can tim: ";
+			getline(cin, s);
+			for (auto *i : this->sach)
+			{
+				if (i->getMaSach() == s)
+				{
+					i->xuat();
+					cout << endl;
+					flag = true;
+				}
+			}
+			break;
+		}
+		else if (choose == 2)
+		{
+			cout << "Nhap ten sach can tim: ";
+			getline(cin, s);
+			for (auto *i : this->sach)
+			{
+				if (i->getTenSach() == s)
+				{
+					i->xuat();
+					cout << endl;
+					flag = true;
+				}
+			}
+			break;
+		}
+		else if (choose == 3)
+		{
+			cout << "Nhap ten tac gia can tim: ";
+			getline(cin, s);
+			for (auto *i : this->sach)
+			{
+				if (i->getTacGia() == s)
+				{
+					i->xuat();
+					cout << endl;
+					flag = true;
+				}
+			}
+			break;
+		}
+		else
+		{
+			cout << "Lua chon khong phu hop. Vui long nhap lai.\n\n";
+			continue;
+		}
+	} while (true);
+
+	if (flag == false)
+	{
+		cout << "Khong tim thay thong tin du lieu can tim phu hop.\n\n";
+	}
+}
+
+void QuanLyThuVien::themDocGia()
+{
+	this->docGia.resize(this->docGia.size() + 1);
+	this->docGia[this->docGia.size() - 1].nhap();
+}
+
+void QuanLyThuVien::xoaDocGia()
+{
+	int choose;
+	string s;
+	bool flag = false;
+
+	do
+	{
+		cout << "Input 1: Xoa dua vao ma doc gia.\n";
+		cout << "      2: Xoa dua vao ten doc gia.\n";
+		cout << "Choose: ";
+		cin >> choose;
+		cin.ignore();
+
+		if (choose == 1)
+		{
+			cout << "Nhap ma doc gia can xoa: ";
+			getline(cin, s);
+			for (int i = 0; i < this->docGia.size(); i++)
+			{
+				if ((this->docGia[i].getMaDocGia() == s) && (this->docGia[i].getMaDocGia() != this->docGia[this->docGia.size() - 1].getMaDocGia()))
+				{
+					this->docGia[i] = this->docGia[this->docGia.size() - 1];
+					this->docGia.resize(this->docGia.size() - 1);
+					break;
+				}
+				else if ((this->docGia[i].getMaDocGia()) == s && (this->docGia[i].getMaDocGia() == this->docGia[this->docGia.size() - 1].getMaDocGia()))
+				{
+					this->docGia.resize(this->docGia.size() - 1);
+					break;
+				}
+			}
+			break;
+		}
+		else if (choose == 2)
+		{
+			cout << "Nhap ten doc gia can xoa: ";
+			getline(cin, s);
+			for (auto i : this->docGia)
+			{
+				if (i.getTenDocGia() == s)
+				{
+					i.xuat();
+					flag = true;
+				}
+			}
+			cout << endl;
+			if (flag == true)
+			{
+				string str;
+				cout << "Nhap ma doc gia can xoa: ";
+				getline(cin, str);
+				for (int i = 0; i < this->docGia.size(); i++)
+				{
+					if (this->docGia[i].getMaDocGia() == str && (this->docGia[i].getMaDocGia() != this->docGia[this->docGia.size() - 1].getMaDocGia()))
+					{
+						this->docGia[i] = this->docGia[this->docGia.size() - 1];
+						this->docGia.resize(this->docGia.size() - 1);
+						break;
+					}
+					else if (this->docGia[i].getMaDocGia() == str && (this->docGia[i].getMaDocGia() == this->docGia[this->docGia.size() - 1].getMaDocGia()))
+					{
+						this->docGia.resize(this->docGia.size() - 1);
+						break;
+					}
+				}
+			}
+			break;
+		}
+		else
+		{
+			cout << "Lua chon khong phu hop. Vui long nhap lai.\n\n";
+			continue;
+		}
+	} while (true);
+}
+
+void QuanLyThuVien::suaDocGia()
+{
+	int choose;
+	string s;
+	bool flag = false;
+
+	cout << "Nhap ma doc gia can sua: ";
+	getline(cin, s);
+
+	for (int i = 0; i < this->docGia.size(); i++)
+	{
+		if (this->docGia[i].getMaDocGia() == s)
+		{
+			flag = true;
+			string str;
+			do
+			{
+				cout << "Input 1: Sua ma doc gia.\n";
+				cout << "      2: Sua ten doc gia.\n";
+				cout << "      3: Sua ngay sinh.\n";
+				cout << "      4: Sua dia chi.\n";
+				cout << "      5: Sua nghe nghiep.\n";
+				cout << "Choose: ";
+				cin >> choose;
+				cin.ignore();
+				if (choose == 1)
+				{
+					cout << "Nhap ma doc gia moi: ";
+					getline(cin, str);
+					this->docGia[i].setMaDocGia(str); break;
+				}
+				else if (choose == 2)
+				{
+					cout << "Nhap ten doc gia moi: ";
+					getline(cin, str);
+					this->docGia[i].setTenDocGia(str); break;
+				}
+				else if (choose == 3)
+				{
+					cout << "Nhap ngay sinh moi: ";
+					getline(cin, str);
+					this->docGia[i].setNgaySinh(str); break;
+				}
+				else if (choose == 4)
+				{
+					cout << "Nhap dia chi moi: ";
+					getline(cin, str);
+					this->docGia[i].setDiaChi(str); break;
+				}
+				else if (choose == 5)
+				{
+					cout << "Nhap nghe nghiep moi: ";
+					getline(cin, str);
+					cin.ignore();
+					this->docGia[i].setNgheNghiep(str); break;
+				}
+				else
+				{
+					cout << "Lua chon khong phu hop. Vui long nhap lai.\n\n";
+					continue;
+				}
+			} while (true);
+		}
+		if (flag == true)
+		{
+			break;
+		}
+	}
+
+	if (flag == false)
+	{
+		cout << "Ma doc gia khong ton tai.!!\n\n";
+	}
+}
+
+void QuanLyThuVien::timKiemDocGia()
+{
+	int choose;
+	bool flag = false;
+	string s;
+
+	do
+	{
+		cout << "Input 1: Tim kiem theo ma doc gia.\n";
+		cout << "      2: Tim kiem the0 ten doc gia.\n";
+		cout << "Choose: ";
+		cin >> choose;
+		cin.ignore();
+
+		if (choose == 1)
+		{
+			cout << "Nhap ma doc gia can tim: ";
+			getline(cin, s);
+			for (int i = 0; i < this->docGia.size(); i++)
+			{
+				if (this->docGia[i].getMaDocGia() == s)
+				{
+					this->docGia[i].xuat();
+					cout << endl;
+					flag = true;
+				}
+			}
+			break;
+		}
+		else if (choose == 2)
+		{
+			cout << "Nhap ten doc gia can tim: ";
+			getline(cin, s);
+			for (int i=0;i<this->docGia.size();i++)
+			{
+				if (this->docGia[i].getTenDocGia() == s)
+				{
+					this->docGia[i].xuat();
+					cout << endl;
+					flag = true;
+				}
+			}
+			break;
+		}
+		else
+		{
+			cout << "Lua chon khong phu hop. Vui long nhap lai.\n\n";
+			continue;
+		}
+	} while (true);
+
+	if (flag == false)
+	{
+		cout << "Khong tim thay thong tin du lieu can tim phu hop.\n\n";
+	}
 }

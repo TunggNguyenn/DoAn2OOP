@@ -1,5 +1,6 @@
 ﻿#ifndef __LIBRARY_H__
 #define __LIBRARY_H__
+#include "MyDate.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -21,6 +22,8 @@ private:
 public:
 	Sach() {};
 	virtual ~Sach() {};
+	Sach& operator=(const Sach& sach);
+
 	virtual void nhap();
 	virtual void xuat();
 
@@ -50,6 +53,7 @@ private:
 public:
 	SachTiengViet() : Sach() {};
 	virtual ~SachTiengViet() {};
+	SachTiengViet& operator=(const SachTiengViet& sachTiengViet);
 
 	virtual string loaiSach();
 
@@ -65,6 +69,8 @@ private:
 public:
 	SachNgoaiVan() : Sach() {};
 	virtual ~SachNgoaiVan() {};
+	SachNgoaiVan& operator=(const SachNgoaiVan& sachNgoaiVan);
+
 	virtual void nhap();
 	virtual void xuat();
 
@@ -125,9 +131,9 @@ class PhieuMuonTraSach
 private:
 	string maPhieu;
 	string tenDocGia;
-	string ngayMuon;
-	string ngayHetHan;
-	string ngayTra;
+	MyDate ngayMuon;
+	MyDate ngayHetHan;
+	MyDate ngayTra;
 	vector<Sach*> sachMuon;
 public:
 	PhieuMuonTraSach() {};
@@ -145,20 +151,8 @@ public:
 	void nhap();
 	void xuat();
 
-	void setMaPhieu(const string& maPhieu);
-	string getMaPhieu();
-
-	void setTenDocGia(const string& tenDocGia);
-	string getTenDocGia();
-
-	void setNgayMuon(const string& ngayMuon);
-	string getNgayMuon();
-
-	void setNgayHetHan(const string& ngayHetHan);
-	string getNgayHetHan();
-
-	void setNgayTra(const string& ngayTra);
-	string getNgayTra();
+	friend istream& operator>>(istream& input, PhieuMuonTraSach& phieuMuonTraSach);
+//	friend ostream& operator<<(ostream& output, const PhieuMuonTraSach& phieuMuonTraSach);
 };
 
 
@@ -182,18 +176,18 @@ public:
 		}
 	}
 	
-	void nhap(const string& fileSach);
+	void nhap(const string& fileSach, const string& fileDocGia);
 	void xuat();
 
 	void themSach();
 	void xoaSach();
 	void suaSach();
-	Sach* timKiemSach();
+	void timKiemSach();
 
 	void themDocGia();
 	void xoaDocGia();
 	void suaDocGia();
-	DocGia* timKiemDocGia();
+	void timKiemDocGia();
 
 
 };

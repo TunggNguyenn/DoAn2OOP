@@ -20,69 +20,41 @@ void menuSach()
 
 int main()
 {
+	//QuanLyThuVien quanLyThuVien;
+	//quanLyThuVien.nhap("Sach.csv", "DocGia.csv");
+	//menuSach();
+	//quanLyThuVien.xuat();
 
+	////quanLyThuVien.xoaSach();
+	////quanLyThuVien.xuat();
 
+	////quanLyThuVien.suaSach();
+	////quanLyThuVien.xuat();
 
-	QuanLyThuVien quanLyThuVien;
-	quanLyThuVien.nhap("Sach.csv");
-	menuSach();
-	quanLyThuVien.xuat();
+	////quanLyThuVien.timKiemSach();
 
-	quanLyThuVien.themSach();
-	menuSach();
-	quanLyThuVien.xuat();
-	//fstream fopen;
-	//fopen.open("Sach.csv");
-	//fopen.seekg(53L);
+	//quanLyThuVien.xoaDocGia();
+	//quanLyThuVien.xuat();
 
-	////string q;
-	////fopen >> q;
-	////cout << q << endl;
-	//vector<Sach*> sach;
-	//string test;
-	//int count = 0;
+	//quanLyThuVien.suaDocGia();
+	//quanLyThuVien.xuat();
 
+	//quanLyThuVien.timKiemDocGia();
 
-	//while (!fopen.eof())
-	//{
-	//	getline(fopen, test);
-	//	for (int i = 0; i < test.length(); i++)
-	//	{
-	//		if (test[i] == ',')
-	//		{
-	//			count++;
-	//		}
-	//	}
+	ifstream ifopen;
+	ifopen.open("DanhSachPhieuMuonTraSach.csv", ios::in);
+	string s;
+	ifopen.seekg(144L, ios::in);
+	ifopen >> s;
+	cout << s << endl;
 
-	//	if (count == 5)
-	//	{
-	//		int q = test.length();
-	//		fopen.seekg(-(int)(q+2), ios::cur);
-	//		SachNgoaiVan* sachNgoaiVan = new SachNgoaiVan;
-	//		fopen >> *sachNgoaiVan;
+	vector<PhieuMuonTraSach> phieu;
+	phieu.resize(3);
 
-	//		sach.resize(sach.size() + 1);
-	//		sach[sach.size()-1] = sachNgoaiVan;
-	//	}
-	//	else if (count == 4)
-	//	{
-	//		int q = test.length();
-	//		fopen.seekg(-(int)(q+2), ios::cur);
-	//		SachTiengViet* sachTiengViet = new SachTiengViet;
-	//		fopen >> *sachTiengViet;
+	for (int i = 0; i < 3; i++)
+	{
 
-	//		sach.resize(sach.size() + 1);
-	//		sach[sach.size() - 1] = sachTiengViet;
-	//	}
-	//	count = 0;
-	//}
-
-
-	//for (int i = 0; i < sach.size(); i++)
-	//{
-	//	sach[i]->xuat();
-	//	cout << endl;
-	//}
+	}
 	system("pause");
 	return 0;
 }
