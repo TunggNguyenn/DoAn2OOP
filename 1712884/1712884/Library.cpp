@@ -410,20 +410,49 @@ void PhieuMuonTraSach::nhapFile(istream& file)
 		}
 
 		getline(file, test, ',');
+		int i = test.length();
 		if (this->maPhieu == test)
 		{
-			int i = test.length();
 			file.seekg(-(i + 1), ios::cur);
 		}
 		else
 		{
-			int i = test.length();
+			if (test.length() == 0)
+			{
+				break;
+			}
 			file.seekg(-(i + 1), ios::cur); break;
-	
 		}
 		count = 0;
 	} while (true);
 }
+
+string PhieuMuonTraSach::getMaPhieu()
+{
+	return this->maPhieu;
+}
+
+string PhieuMuonTraSach::getTenDocGia()
+{
+	return this->tenDocGia;
+}
+
+MyDate PhieuMuonTraSach::getNgayHetHan()
+{
+	return this->ngayHetHan;
+}
+
+MyDate PhieuMuonTraSach::getNgayTra()
+{
+	return this->ngayTra;
+}
+
+vector<Sach*>& PhieuMuonTraSach::getSachMuon()
+{
+	return this->sachMuon;
+}
+
+
 
 void PhieuMuonTraSach::nhap(const string& maPhieu, const string& tenDocGia)
 {
@@ -586,12 +615,13 @@ void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia, cons
 		this->phieuMuonTraSach.resize(this->phieuMuonTraSach.size() + 1);
 		this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1] = new PhieuMuonTraSach;
 		this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1]->nhapFile(ifopen);
+		test = "";
 		getline(ifopen, test, ',');
 
 		if (test.length() != 0)
 		{
 			int i = test.length();
-			ifopen.seekg(-i, ios::cur);
+			ifopen.seekg(-(i + 1), ios::cur);
 		}
 		else
 		{
@@ -1086,7 +1116,7 @@ void QuanLyThuVien::timKiemDocGia()
 		{
 			cout << "Nhap ten doc gia can tim: ";
 			getline(cin, s);
-			for (int i=0;i<this->docGia.size();i++)
+			for (int i = 0; i < this->docGia.size(); i++)
 			{
 				if (this->docGia[i].getTenDocGia() == s)
 				{
@@ -1107,5 +1137,54 @@ void QuanLyThuVien::timKiemDocGia()
 	if (flag == false)
 	{
 		cout << "Khong tim thay thong tin du lieu can tim phu hop.\n\n";
+	}
+}
+
+void QuanLyThuVien::danhSachDocGiaBiPhat()
+{
+	bool flag = false;
+	for (auto *i : this->phieuMuonTraSach)
+	{
+		cout << setw(15) << left;
+		cout << i->getMaPhieu();
+		cout << setw(31) << left;
+		cout << i->getTenDocGia();
+
+		int k = i->getNgayHetHan().distance(i->getNgayTra());
+		if (i->getNgayHetHan().distance(i->getNgayTra()) > 0)
+		{
+			cout << "\nDanh muc bi phat do tra tre han: ";
+			cout << i->getNgayHetHan().distance(i->getNgayTra()) << " ngay" << endl;
+			
+			for (int j = 0; j < i->getSachMuon().size(); j++)
+			{
+				cout << setw(15) << left;
+				cout << i->getSachMuon()[j]->getMaSach();
+				cout << setw(31) << left;
+				cout << i->getSachMuon()[j]->getTenSach();
+
+				if (dynamic_cast<SachNgoaiVan*>(i->getSachMuon()[j]))
+				{
+					cout << setw(15) << left;
+					cout << dynamic_cast<SachNgoaiVan*>(i->getSachMuon()[j])->loaiSach();
+					cout << setw(15) << left;
+					cout << 20000 * i->getNgayHetHan().distance(i->getNgayTra()) << endl;
+				}
+				else
+				{
+					cout << setw(15) << left;
+					cout << dynamic_cast<SachTiengViet*>(i->getSachMuon()[j])->loaiSach();
+					cout << setw(15) << left;
+					cout << 10000 * i->getNgayHetHan().distance(i->getNgayTra()) << endl;
+				}
+
+			}
+			cout << '\n';
+
+		}
+		else
+		{
+			cout << "Khong bi phat.\n\n";
+		}
 	}
 }

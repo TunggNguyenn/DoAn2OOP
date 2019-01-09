@@ -1,2 +1,11 @@
-﻿  main.cpp
+﻿  Library.cpp
+c:\users\dell\source\repos\1712884\1712884\library.cpp(391): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\source\repos\1712884\1712884\library.cpp(550): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\source\repos\1712884\1712884\library.cpp(834): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\dell\source\repos\1712884\1712884\library.cpp(952): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\source\repos\1712884\1712884\library.cpp(986): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\source\repos\1712884\1712884\library.cpp(1020): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\source\repos\1712884\1712884\library.cpp(1104): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\source\repos\1712884\1712884\library.cpp(1119): warning C4018: '<': signed/unsigned mismatch
+c:\users\dell\source\repos\1712884\1712884\library.cpp(1159): warning C4018: '<': signed/unsigned mismatch
   1712884.vcxproj -> C:\Users\Dell\source\repos\1712884\Debug\1712884.exe

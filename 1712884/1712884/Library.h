@@ -153,6 +153,12 @@ public:
 
 	void nhapFile(istream& file);
 //	void xuatFile(ostream& file);
+	string getMaPhieu();
+	string getTenDocGia();
+
+	MyDate getNgayHetHan();
+	MyDate getNgayTra();
+	vector<Sach*>& getSachMuon();
 };
 
 

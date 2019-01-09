@@ -17,6 +17,10 @@ void menuSach()
 	cout << "\n";
 }
 
+void menu()
+{
+	cout << "Input 1: Them sach.\n";
+}
 
 int main()
 {
@@ -33,8 +37,11 @@ int main()
 
 	////quanLyThuVien.timKiemSach();
 
-	quanLyThuVien.xoaDocGia();
-	quanLyThuVien.xuat();
+	//quanLyThuVien.xoaDocGia();
+	//quanLyThuVien.xuat();
+
+
+	quanLyThuVien.danhSachDocGiaBiPhat();
 
 	//quanLyThuVien.suaDocGia();
 	//quanLyThuVien.xuat();

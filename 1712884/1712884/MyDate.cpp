@@ -55,23 +55,23 @@ int MyDate::distance(const MyDate & myDate)
 	{
 		if (this->month == myDate.month)
 		{
-			return myDate.day - this->day + 1;
+			return myDate.day - this->day;
 		}
 		else
 		{
 			if (((this->year % 4 == 0) && (this->year % 100 != 0)) || (this->year % 400 == 0) && this->month == 2)
 			{
-				return months[this->month] - this->day + 2 + myDate.day;
+				return months[this->month - 1] - this->day + 1 + myDate.day;
 			}
 			else
 			{
-				return months[this->month] - this->day + 1 + myDate.day;
+				return months[this->month - 1] - this->day + myDate.day;
 			}
 		}
 	}
 	else
 	{
-		return months[11] - this->day + 1 + myDate.day;
+		return months[11] - this->day + myDate.day;
 	}
 }
 
