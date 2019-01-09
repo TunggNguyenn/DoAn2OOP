@@ -5,7 +5,7 @@ void MyDate::nhap()
 {
 	do
 	{
-		cout << "Ngay: ";
+		cout << "\nNgay: ";
 		cin >> this->day;
 		if (this->day > 31)
 		{
@@ -88,7 +88,15 @@ istream & operator>>(istream & input, MyDate & myDate)
 
 ostream & operator<<(ostream & output, const MyDate & myDate)
 {
-	//output << setw(15) << right;
-	output << myDate.day << "/" << myDate.month << "/" << myDate.year;
+	output << setw(2) << left;
+	output << myDate.day;
+	output << setw(1) << left;
+	output << "/";
+	output << setw(2) << left;
+	output << myDate.month;
+	output << setw(1) << left;
+	output << "/";
+	output << setw(9) << left;
+	output << myDate.year;
 	return output;
 }

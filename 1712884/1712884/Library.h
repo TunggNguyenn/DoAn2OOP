@@ -8,7 +8,9 @@
 #include <iomanip>
 using namespace std;
 
-
+void menuSach();
+void menuDocGia();
+void menuPhieuMuonTraSach();
 
 /*Class Sách*/
 class Sach
@@ -151,8 +153,9 @@ public:
 	void nhap(const string& maPhieu, const string& tenDocGia);
 	void xuat();
 
-	void nhapFile(istream& file);
-//	void xuatFile(ostream& file);
+	void nhapFile(istream& inFile);
+	void xuatFile(ostream& outFile);
+
 	string getMaPhieu();
 	string getTenDocGia();
 
@@ -182,18 +185,26 @@ public:
 		}
 	}
 	
-	void nhap(const string& fileSach, const string& fileDocGia, const string& filePhieu);
+	void nhap();
 	void xuat();
+
+	void nhapFile(const string& fileSach, const string& fileDocGia, const string& filePhieu);
+	void xuatFile(const string& fileSach, const string& fileDocGia, const string& filePhieu);
 
 	void themSach();
 	void xoaSach();
 	void suaSach();
 	void timKiemSach();
+	void xemSach();
 
 	void themDocGia();
 	void xoaDocGia();
 	void suaDocGia();
 	void timKiemDocGia();
+	void xemDocGia();
+
+	void dangKyMuonSach();
+	void xemPhieuMuonTraSach();
 
 	void danhSachDocGiaBiPhat();
 };

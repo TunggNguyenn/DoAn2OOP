@@ -1,6 +1,22 @@
 ﻿#include "Library.h"
 
 
+void menuSach()
+{
+	cout << setw(15) << left;
+	cout << "Ma sach: ";
+	cout << setw(51) << left;
+	cout << "Ten sach: ";
+	cout << setw(31) << left;
+	cout << "Tac gia: ";
+	cout << setw(31) << left;
+	cout << "Nha xuat ban: ";
+	cout << setw(15) << left;
+	cout << "Gia sach: ";
+	cout << setw(15) << left;
+	cout << "ISBN: ";
+	cout << "\n";
+}
 
 void menuDocGia()
 {
@@ -91,15 +107,14 @@ void Sach::nhapFile(istream & iFile)
 
 void Sach::xuatFile(ostream & oFile)
 {
-	oFile << setw(15) << left;
 	oFile << this->maSach;
-	oFile << setw(51) << left;
+	oFile << ',';
 	oFile << this->tenSach;
-	oFile << setw(31) << left;
+	oFile << ',';
 	oFile << this->tacGia;
-	oFile << setw(31) << left;
+	oFile << ',';
 	oFile << this->nhaXuatBan;
-	oFile << setw(15) << left;
+	oFile << ',';
 	oFile << this->giaSach;
 }
 
@@ -210,8 +225,8 @@ void SachNgoaiVan::nhapFile(istream & iFile)
 
 void SachNgoaiVan::xuatFile(ostream & oFile)
 {
-	Sach::xuat();
-	oFile << setw(15) << left;
+	Sach::xuatFile(oFile);
+	oFile << ',';
 	oFile << this->ISBN;
 }
 
@@ -283,19 +298,18 @@ void DocGia::nhapFile(istream & input)
 
 void DocGia::xuatFile(ostream & output)
 {
-	output << setw(15) << left;
 	output << this->maDocGia;
-	output << setw(31) << left;
+	output << ',';
 	output << this->tenDocGia;
-	output << setw(12) << left;
+	output << ',';
 	output << this->ngaySinh;
-	output << setw(25) << left;
+	output << ',';
 	output << this->diaChi;
-	output << setw(25) << left;
+	output << ',';
 	output << this->ngheNghiep;
-	output << setw(15) << left;
+	output << ',';
 	output << this->ngayCap;
-	output << setw(25) << left;
+	output << ',';
 	output << this->ngayHetHan;
 }
 
@@ -374,20 +388,20 @@ string DocGia::getNgayHetHan()
 
 
 /*---------------Phiếu Mượn Trả Sách---------------*/
-void PhieuMuonTraSach::nhapFile(istream& file)
+void PhieuMuonTraSach::nhapFile(istream& inFile)
 {
 	string test;
 	int count = 0;
 	do
 	{
-		getline(file, this->maPhieu, ',');
-		getline(file, this->tenDocGia, ',');
-		file >> this->ngayMuon;
-		file >> this->ngayHetHan;
-		file >> this->ngayTra;
+		getline(inFile, this->maPhieu, ',');
+		getline(inFile, this->tenDocGia, ',');
+		inFile >> this->ngayMuon;
+		inFile >> this->ngayHetHan;
+		inFile >> this->ngayTra;
 		this->sachMuon.resize(this->sachMuon.size() + 1);
 
-		getline(file, test);
+		getline(inFile, test);
 		for (int i = 0; i < test.length(); i++)
 		{
 			if (test[i] == ',')
@@ -398,22 +412,22 @@ void PhieuMuonTraSach::nhapFile(istream& file)
 		int pos = test.length();
 		if (count == 5)
 		{
-			file.seekg(-(pos + 2), ios::cur);
+			inFile.seekg(-(pos + 2), ios::cur);
 			this->sachMuon[this->sachMuon.size() - 1] = new SachNgoaiVan;
-			this->sachMuon[this->sachMuon.size() - 1]->nhapFile(file);
+			this->sachMuon[this->sachMuon.size() - 1]->nhapFile(inFile);
 		}
 		else if (count == 4)
 		{
-			file.seekg(-(pos + 2), ios::cur);
+			inFile.seekg(-(pos + 2), ios::cur);
 			this->sachMuon[this->sachMuon.size() - 1] = new SachTiengViet;
-			this->sachMuon[this->sachMuon.size() - 1]->nhapFile(file);
+			this->sachMuon[this->sachMuon.size() - 1]->nhapFile(inFile);
 		}
 
-		getline(file, test, ',');
+		getline(inFile, test, ',');
 		int i = test.length();
 		if (this->maPhieu == test)
 		{
-			file.seekg(-(i + 1), ios::cur);
+			inFile.seekg(-(i + 1), ios::cur);
 		}
 		else
 		{
@@ -421,10 +435,30 @@ void PhieuMuonTraSach::nhapFile(istream& file)
 			{
 				break;
 			}
-			file.seekg(-(i + 1), ios::cur); break;
+			inFile.seekg(-(i + 1), ios::cur); break;
 		}
 		count = 0;
 	} while (true);
+}
+
+void PhieuMuonTraSach::xuatFile(ostream & outFile)
+{
+	for (int i = 0; i < this->sachMuon.size(); i++)
+	{
+		outFile << this->maPhieu;
+		outFile << ',';
+		outFile << this->tenDocGia;
+		outFile << ',';
+		outFile << this->ngayMuon;
+		outFile << ',';
+		outFile << this->ngayHetHan;
+		outFile << ',';
+		outFile << this->ngayTra;
+		outFile << ',';
+
+		this->sachMuon[i]->xuatFile(outFile);
+		outFile << '\n';
+	}
 }
 
 string PhieuMuonTraSach::getMaPhieu()
@@ -459,11 +493,11 @@ void PhieuMuonTraSach::nhap(const string& maPhieu, const string& tenDocGia)
 	this->maPhieu = maPhieu;
 	this->tenDocGia = tenDocGia;
 	cout << "Ngay muon: ";
-	cin >> this->ngayMuon;
+	this->ngayMuon.nhap();
 	cout << "Ngay het han: ";
-	cin >> this->ngayHetHan;
+	this->ngayHetHan.nhap();
 	cout << "Ngay tra: ";
-	cin >> this->ngayTra;
+	this->ngayTra.nhap();
 
 	int soSach;
 	int choose;
@@ -496,19 +530,20 @@ void PhieuMuonTraSach::nhap(const string& maPhieu, const string& tenDocGia)
 
 void PhieuMuonTraSach::xuat()
 {
+	menuPhieuMuonTraSach();
 	cout << setw(15) << left;
 	cout << this->maPhieu;
 	cout << setw(31) << left;
 	cout << this->tenDocGia;
-	cout << setw(15) << right;
+	cout << setw(15) << left;
 	cout << this->ngayMuon;
-	cout << setw(15) << right;
+	cout << setw(15) << left;
 	cout << this->ngayHetHan;
-	cout << setw(15) << right;
+	cout << setw(15) << left;
 	cout << this->ngayTra;
 	cout << "\n";
 
-	cout << "\n\nDanh muc sach muon: \n";
+	cout << "\nDanh muc sach muon: \n";
 	
 	cout << setw(15) << left;
 	cout << "Ma sach: ";
@@ -527,13 +562,14 @@ void PhieuMuonTraSach::xuat()
 	for (auto *i : this->sachMuon)
 	{
 		i->xuat();
-		cout << endl;
+		cout << '\n';
 	}
+	cout << "\n_-_-_-_-_-_-_-_-_-_-_-_-_-\n";
 }
 
 
 /*---------------Quản Lý Thư Viện---------------*/
-void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia, const string& filePhieu)
+void QuanLyThuVien::nhapFile(const string & fileSach, const string& fileDocGia, const string& filePhieu)
 {
 	ifstream ifopen;
 	/*------------Đọc File Sách------------*/
@@ -615,6 +651,7 @@ void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia, cons
 		this->phieuMuonTraSach.resize(this->phieuMuonTraSach.size() + 1);
 		this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1] = new PhieuMuonTraSach;
 		this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1]->nhapFile(ifopen);
+
 		test = "";
 		getline(ifopen, test, ',');
 
@@ -630,6 +667,10 @@ void QuanLyThuVien::nhap(const string & fileSach, const string& fileDocGia, cons
 	}
 
 	ifopen.close();
+}
+
+void QuanLyThuVien::nhap()
+{
 }
 
 void QuanLyThuVien::xuat()
@@ -653,6 +694,49 @@ void QuanLyThuVien::xuat()
 	}
 }
 
+void QuanLyThuVien::xuatFile(const string & fileSach, const string& fileDocGia, const string& filePhieu)
+{
+	ofstream ofopen;
+
+	/*------------Ghi File Sách------------*/
+	ofopen.open(fileSach, ios::out);
+
+	ofopen << "Ma sach,Ten sach,Tac gia,Nha xuat ban,Gia sach,ISBN\n";
+
+	for (auto *i : this->sach)
+	{
+		i->xuatFile(ofopen);
+		ofopen << '\n';
+	}
+
+	ofopen.close();
+
+
+	/*------------Ghi File Đọc Giả------------*/
+	ofopen.open(fileDocGia, ios::out);
+
+	ofopen << "Ma doc gia,Ten doc gia,Ngay sinh,Dia chi,Nghe nghiep,Ngay cap,Ngay het han\n";
+
+	for (auto i : this->docGia)
+	{
+		i.xuatFile(ofopen);
+		ofopen << '\n';
+	}
+
+	ofopen.close();
+
+	/*------------Đọc File Danh Sach Phieu Muon Tra Sach------------*/
+	ofopen.open(filePhieu, ios::out);
+
+	ofopen << "Ma phieu,Ma doc gia,Ngay muon,Ngay het han,Ngay tra,Ma sach,Ten sach,Tac gia,Nha xuat ban,Gia sach,ISBN\n";
+
+	for (auto *i : this->phieuMuonTraSach)
+	{
+		i->xuatFile(ofopen);
+	}
+	ofopen.close();
+}
+
 void QuanLyThuVien::themSach()
 {
 	int choose;
@@ -664,6 +748,7 @@ void QuanLyThuVien::themSach()
 		cout << "Choose: ";
 		cin >> choose;
 		cin.ignore();
+		cout << "\nNhap: \n";
 		if (choose == 1)
 		{
 			SachTiengViet* sachTiengViet = new SachTiengViet;
@@ -705,13 +790,14 @@ void QuanLyThuVien::xoaSach()
 		{
 			cout << "Nhap ma sach can xoa: ";
 			getline(cin, s);
-			for (auto *i : this->sach)
+			for (auto *&i : this->sach)
 			{
 				if (i->getMaSach() == s && i != this->sach[this->sach.size() - 1])
 				{
 					delete[] i;
 					if (dynamic_cast<SachNgoaiVan*>(this->sach[this->sach.size() - 1]))
 					{
+
 						i = new SachNgoaiVan;
 						*i = *this->sach[this->sach.size() - 1];
 						dynamic_cast<SachNgoaiVan*>(i)->setISBN(dynamic_cast<SachNgoaiVan*>(this->sach[this->sach.size() - 1])->getISBN());
@@ -861,16 +947,18 @@ void QuanLyThuVien::timKiemSach()
 	do
 	{
 		cout << "Input 1: Tim kiem theo ma sach.\n";
-		cout << "      2: Tim kiem the0 ten sach.\n";
+		cout << "      2: Tim kiem theo ten sach.\n";
 		cout << "      3: Tim kiem theo tac gia.\n";
 		cout << "Choose: ";
 		cin >> choose;
 		cin.ignore();
 
+
 		if (choose == 1)
 		{
 			cout << "Nhap ma sach can tim: ";
 			getline(cin, s);
+			menuSach();
 			for (auto *i : this->sach)
 			{
 				if (i->getMaSach() == s)
@@ -886,6 +974,7 @@ void QuanLyThuVien::timKiemSach()
 		{
 			cout << "Nhap ten sach can tim: ";
 			getline(cin, s);
+			menuSach();
 			for (auto *i : this->sach)
 			{
 				if (i->getTenSach() == s)
@@ -901,6 +990,7 @@ void QuanLyThuVien::timKiemSach()
 		{
 			cout << "Nhap ten tac gia can tim: ";
 			getline(cin, s);
+			menuSach();
 			for (auto *i : this->sach)
 			{
 				if (i->getTacGia() == s)
@@ -921,7 +1011,16 @@ void QuanLyThuVien::timKiemSach()
 
 	if (flag == false)
 	{
-		cout << "Khong tim thay thong tin du lieu can tim phu hop.\n\n";
+		cout << "\n\nKhong tim thay thong tin du lieu can tim phu hop.\n\n";
+	}
+}
+
+void QuanLyThuVien::xemSach()
+{
+	for (auto *i : this->sach)
+	{
+		i->xuat();
+		cout << endl;
 	}
 }
 
@@ -1092,7 +1191,7 @@ void QuanLyThuVien::timKiemDocGia()
 	do
 	{
 		cout << "Input 1: Tim kiem theo ma doc gia.\n";
-		cout << "      2: Tim kiem the0 ten doc gia.\n";
+		cout << "      2: Tim kiem theo ten doc gia.\n";
 		cout << "Choose: ";
 		cin >> choose;
 		cin.ignore();
@@ -1101,6 +1200,7 @@ void QuanLyThuVien::timKiemDocGia()
 		{
 			cout << "Nhap ma doc gia can tim: ";
 			getline(cin, s);
+			menuDocGia();
 			for (int i = 0; i < this->docGia.size(); i++)
 			{
 				if (this->docGia[i].getMaDocGia() == s)
@@ -1110,12 +1210,14 @@ void QuanLyThuVien::timKiemDocGia()
 					flag = true;
 				}
 			}
+			cout << endl;
 			break;
 		}
 		else if (choose == 2)
 		{
 			cout << "Nhap ten doc gia can tim: ";
 			getline(cin, s);
+			menuDocGia();
 			for (int i = 0; i < this->docGia.size(); i++)
 			{
 				if (this->docGia[i].getTenDocGia() == s)
@@ -1125,6 +1227,7 @@ void QuanLyThuVien::timKiemDocGia()
 					flag = true;
 				}
 			}
+			cout << endl;
 			break;
 		}
 		else
@@ -1136,26 +1239,82 @@ void QuanLyThuVien::timKiemDocGia()
 
 	if (flag == false)
 	{
-		cout << "Khong tim thay thong tin du lieu can tim phu hop.\n\n";
+		cout << "\n\nKhong tim thay thong tin du lieu can tim phu hop.\n\n";
+	}
+}
+
+void QuanLyThuVien::xemDocGia()
+{
+	for (auto i : this->docGia)
+	{
+		i.xuat();
+		cout << endl;
+	}
+}
+
+void QuanLyThuVien::dangKyMuonSach()
+{
+	string s;
+	bool flag = false;
+	cout << "Nhap ma doc gia de dang ky: ";
+	getline(cin, s);
+
+	for (auto i : this->docGia)
+	{
+		if (i.getMaDocGia() == s)
+		{
+			flag = true;
+			this->phieuMuonTraSach.resize(this->phieuMuonTraSach.size() + 1);
+			this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1] = new PhieuMuonTraSach;
+			this->phieuMuonTraSach[this->phieuMuonTraSach.size() - 1]->nhap(i.getMaDocGia(), i.getTenDocGia()); break;
+		}
+	}
+
+	if (flag == false)
+	{
+		cout << "Ban chua dang ky doc gia. Vui long dang ky doc gia truoc khi dang ky muon sach. Tks.!!\n";
+	}
+}
+
+void QuanLyThuVien::xemPhieuMuonTraSach()
+{
+	for (auto *i : this->phieuMuonTraSach)
+	{
+		i->xuat();
+		cout << endl;
 	}
 }
 
 void QuanLyThuVien::danhSachDocGiaBiPhat()
 {
 	bool flag = false;
+
 	for (auto *i : this->phieuMuonTraSach)
 	{
+		cout << setw(15) << left;
+		cout << "Ma doc gia: ";
+		cout << setw(31) << left;
+		cout << "Ten doc gia: " << endl;
+
 		cout << setw(15) << left;
 		cout << i->getMaPhieu();
 		cout << setw(31) << left;
 		cout << i->getTenDocGia();
 
-		int k = i->getNgayHetHan().distance(i->getNgayTra());
+		int tong = 0;
 		if (i->getNgayHetHan().distance(i->getNgayTra()) > 0)
 		{
-			cout << "\nDanh muc bi phat do tra tre han: ";
-			cout << i->getNgayHetHan().distance(i->getNgayTra()) << " ngay" << endl;
+			cout << "\n\nDanh muc bi phat do tra tre han: ";
+			cout << i->getNgayHetHan().distance(i->getNgayTra()) << " ngay\n";
 			
+			cout << setw(15) << left;
+			cout << "Ma sach: ";
+			cout << setw(31) << left;
+			cout << "Ten sach: ";
+			cout << setw(15) << left;
+			cout << "Loai sach: ";
+			cout << setw(15) << left;
+			cout << "So tien phat: " << endl;
 			for (int j = 0; j < i->getSachMuon().size(); j++)
 			{
 				cout << setw(15) << left;
@@ -1165,10 +1324,12 @@ void QuanLyThuVien::danhSachDocGiaBiPhat()
 
 				if (dynamic_cast<SachNgoaiVan*>(i->getSachMuon()[j]))
 				{
+					
 					cout << setw(15) << left;
 					cout << dynamic_cast<SachNgoaiVan*>(i->getSachMuon()[j])->loaiSach();
 					cout << setw(15) << left;
 					cout << 20000 * i->getNgayHetHan().distance(i->getNgayTra()) << endl;
+					tong += 20000 * i->getNgayHetHan().distance(i->getNgayTra());
 				}
 				else
 				{
@@ -1176,15 +1337,18 @@ void QuanLyThuVien::danhSachDocGiaBiPhat()
 					cout << dynamic_cast<SachTiengViet*>(i->getSachMuon()[j])->loaiSach();
 					cout << setw(15) << left;
 					cout << 10000 * i->getNgayHetHan().distance(i->getNgayTra()) << endl;
+					tong += 10000 * i->getNgayHetHan().distance(i->getNgayTra());
 				}
 
 			}
 			cout << '\n';
-
 		}
 		else
 		{
 			cout << "Khong bi phat.\n\n";
 		}
+		cout << "Tong tien phat: " << tong << endl;
+		cout << "\n_-_-_-_-_-_-_-_-_-_-_-_-_-\n";
+		cout << '\n';
 	}
 }
