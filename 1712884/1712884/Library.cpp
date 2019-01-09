@@ -103,6 +103,7 @@ void Sach::nhapFile(istream & iFile)
 	getline(iFile, this->tacGia, ',');
 	getline(iFile, this->nhaXuatBan, ',');
 	iFile >> this->giaSach;
+	iFile.ignore();
 }
 
 void Sach::xuatFile(ostream & oFile)
@@ -423,6 +424,7 @@ void PhieuMuonTraSach::nhapFile(istream& inFile)
 			this->sachMuon[this->sachMuon.size() - 1]->nhapFile(inFile);
 		}
 
+		test = "";
 		getline(inFile, test, ',');
 		int i = test.length();
 		if (this->maPhieu == test)

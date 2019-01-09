@@ -203,7 +203,7 @@ int main()
 		}
 		else if (choose == 14)
 		{
-			thuVien.xuatFile("test1.csv", "test2.csv", "test3.csv");
+			thuVien.xuatFile("Sach.csv", "DocGia.csv", "DanhSachPhieuMuonTraSach.csv");
 			cout << "\nLuu FILE thanh cong.!!\n";
 			cout << "Press enter to continue.!!";
 			cin.get();
@@ -215,7 +215,7 @@ int main()
 			cin.ignore();
 			if (y == 1)
 			{
-				thuVien.xuatFile("test1.csv", "test2.csv", "test3.csv");
+				thuVien.xuatFile("Sach.csv", "DocGia.csv", "DanhSachPhieuMuonTraSach.csv");
 				cout << "\nLuu FILE thanh cong.!!\n";
 			}
 			break;
