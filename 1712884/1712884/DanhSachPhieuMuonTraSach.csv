@@ -1,7 +1,7 @@
-﻿Mã Phiếu,Tên đọc giả,Ngày mượn,Ngày hết hạn,Ngày trả,Mã Sách,Tên Sách,Tác Giả,Nhà Xuất Bản,Giá Sách,ISBN,
-TT1,Nguyen Thanh Tung,08/01/2019,14/01/2019,13/01/2019,HP,Harry Potter,J. K. Rowling,Bloomsbury ChildrensGia,1801150,8.93E+12,
-TT1,Nguyen Thanh Tung,08/01/2019,14/01/2019,13/01/2019,13MK,Ca phe cung Tony,Tony,NXB Tre,63000,8.93E+12,
-TT1,Nguyen Thanh Tung,08/01/2019,14/01/2019,13/01/2019,CP102,Chi Pheo,Nam Cao,NXB Van Hoc,38300,,
-2MA,Thai Thanh Tung,23/01/2019,29/01/2019,05/02/2019,HP,Harry Potter,J. K. Rowling,Bloomsbury ChildrensGia,1801150,8.93E+12,
-6ABA,Tran Dieu Uy,28/12/2018,03/01/2019,05/01/2019,SM103,Song Mon,Nam Cao,NXB Van Hoc,41300,,
-6ABA,Tran Dieu Uy,28/12/2018,03/01/2019,05/01/2019,TS23,THE STORYTELLERS SECRET,Carmine Gallo,Pan MacMillan,243000,9.78E+12,
+﻿Mã Phiếu,Tên đọc giả,Ngày mượn,Ngày hết hạn,Ngày trả,Mã Sách,Tên Sách,Tác Giả,Nhà Xuất Bản,Giá Sách,ISBN
+TT1,Nguyen Thanh Tung,08/01/2019,14/01/2019,13/01/2019,HP,Harry Potter,J. K. Rowling,Bloomsbury ChildrensGia,1801150,8.93E+12
+TT1,Nguyen Thanh Tung,08/01/2019,14/01/2019,13/01/2019,13MK,Ca phe cung Tony,Tony,NXB Tre,63000,8.93E+12
+TT1,Nguyen Thanh Tung,08/01/2019,14/01/2019,13/01/2019,CP102,Chi Pheo,Nam Cao,NXB Van Hoc,38300
+2MA,Thai Thanh Tung,23/01/2019,29/01/2019,05/02/2019,HP,Harry Potter,J. K. Rowling,Bloomsbury ChildrensGia,1801150,8.93E+12
+6ABA,Tran Dieu Uy,28/12/2018,03/01/2019,05/01/2019,SM103,Song Mon,Nam Cao,NXB Van Hoc,41300
+6ABA,Tran Dieu Uy,28/12/2018,03/01/2019,05/01/2019,TS23,THE STORYTELLERS SECRET,Carmine Gallo,Pan MacMillan,243000,9.78E+12
